@@ -52,12 +52,27 @@ const Home: NextPage<Props> = ({ products }) => {
 };
 
 Home.getInitialProps = async () => {
-  const res = await axios.get('https://fakestoreapi.com/products/');
-  const products = res.data;
+  try {
+    const res = await axios.get('https://fakestoreapi.com/products/', {
+      headers: {
+        // Simula um navegador Chrome moderno para evitar o erro 403
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+        'Accept-Encoding': 'identity'
+      }
+    });
 
-  return {
-    products,
-  };
+    return {
+      products: res.data,
+    };
+  } catch (error) {
+    // Tratamento de erro básico para evitar que a página quebre totalmente
+    const err = error as any;
+    console.error("Erro ao carregar produtos:", err.response?.status || err.message);
+    return {
+      products: [],
+    };
+  }
 };
 
 export default Home;
