@@ -164,7 +164,7 @@ display: flex;
 justify-content: space-between;
 padding: 1.5rem;
 & p {
-    color: #fff;
+    color: #000;
     font-weight: 600;
 }
 `; 

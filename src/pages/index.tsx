@@ -6,11 +6,11 @@ import * as S from '../styles/styles';
 import axios from 'axios';
 
 type Product = {
-  id: string;
-  name: string;
+  id: number;
+  title: string;
   description: string;
-  image: string;
-  price: string;
+  thumbnail: string;
+  price: number;
 };
 
 type Props = {
@@ -18,31 +18,22 @@ type Props = {
 };
 
 const Home: NextPage<Props> = ({ products }) => {
-  // if (!products) {
-  //   return (
-  //     <>
-  //       <Header />
-  //       <Skeleton height={800} count={5} baseColor="#141414"/>
-  //       <Skeleton height={800} count={5} baseColor="#141414"/>
-  //       <Skeleton height={800} count={5} baseColor="#141414"/>
-  //     </>
-  //   );
-  // }
 
   return (
     <>
       <Header />
+
       <S.Main>
         <S.MainSection>
           {products.map((product) => (
             <ProductCard
               key={product.id}
-              id={product.id}
+              id={product.id.toString()}
               quantity={1}
-              name={product.name}
+              name={product.title}
               description={product.description}
-              image={product.image}
-              price={product.price}
+              image={product.thumbnail}
+              price={product.price.toString()}
             />
           ))}
         </S.MainSection>
@@ -53,27 +44,26 @@ const Home: NextPage<Props> = ({ products }) => {
 
 Home.getInitialProps = async () => {
   try {
-    const res = await axios.get('https://fakestoreapi.com/products/', {
-      headers: {
-        // Simula um navegador Chrome moderno para evitar o erro 403
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-        'Accept': 'application/json',
-        'Accept-Encoding': 'identity'
-      }
-    });
+
+    const res = await axios.get('https://dummyjson.com/products');
+
+    console.log("Produtos carregados:", res.data.products);
 
     return {
-      products: res.data,
+      products: res.data.products
     };
-  } catch (error) {
-    // Tratamento de erro básico para evitar que a página quebre totalmente
-    const err = error as any;
-    console.error("Erro ao carregar produtos:", err.response?.status || err.message);
+
+  } catch (error: any) {
+
+    console.error(
+      "Erro ao carregar produtos:",
+      error.response?.status || error.message
+    );
+
     return {
-      products: [],
+      products: []
     };
   }
 };
 
 export default Home;
-

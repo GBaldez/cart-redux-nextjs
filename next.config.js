@@ -5,7 +5,7 @@ const nextConfig = {
     forceSwcTransforms: true,
   },
   images: {
-    domains: ['fakestoreapi.com'],
+    domains: ['cdn.dummyjson.com'],
 }
 
 }
